@@ -1,0 +1,153 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/LypherX/FTagSource/main/MoriScripts')))()
+-- IMPORTANT LOCAL
+local PartnerRank = "🔥Partner"
+local DeveloperRank = "⚒️Developer"
+local ModeratorRank = "🔧Moderator"
+local LeaderboardRank = "🌍#82"
+local SignerRank = "✏️Signer"
+local Wow = "OMG REAL HE SIGN MY HUGES!                                                                                                                                     "
+local speed = (game.Players.LocalPlayer.Character.Humanoid.WalkSpeed)
+local jump = (game.Players.LocalPlayer.Character.Humanoid.JumpPower)
+Username = game.Players.LocalPlayer.DisplayName
+SpamTime = 10
+-- SCRIPT
+local Window = OrionLib:MakeWindow({Name = "Weizzy Fake Tag, HidePremium = false, SaveConfig = true, ConfigFolder = "Mori Scripts"})
+
+local Tab = Window:MakeTab({
+	Name = "Misc Scripts",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddSlider({
+	Name = "Slider",
+	Min = 1,
+	Max = 100,
+	Default = 24,
+	Color = Color3.fromRGB(10, 24, 36),
+	Increment = 1,
+	ValueName = "speed",
+	Callback = function(Value)
+       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+	end    
+})
+
+Tab:AddSlider({
+	Name = "Slider",
+	Min = 1,
+	Max = 100,
+	Default = 24,
+	Color = Color3.fromRGB(10, 24, 36),
+	Increment = 1,
+	ValueName = "jump",
+	Callback = function(Value)
+       game.Players.LocalPlayer.Character.Humanoid.JumpPower = (Value)
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Fake Tags",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "Basic Settings",
+	Callback = function()
+Rank = DeveloperRank
+Message = "SIGNING HUGES <3"
+SpamTime = 30
+Username = game.Players.LocalPlayer.DisplayName
+end    
+})
+
+Tab:AddDropdown({
+	Name = "Rank Picker",
+	Default = "Partner",
+	Options = {"Partner","Developer","Moderator","Leaderboard", "Signer"},
+	Callback = function(Value)
+if Value == 'Partner' then
+            Rank = PartnerRank
+        elseif Value == 'Developer' then
+            Rank = DeveloperRank
+        elseif Value == 'Moderator' then
+            Rank = ModeratorRank
+        elseif Value == 'Leaderboard' then
+            Rank = LeaderboardRank
+        elseif Value == 'Signer' then
+            Rank = SignerRank
+        end
+	end    
+
+})
+	  
+Tab:AddTextbox({
+	Name = "FAKE Username",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(User)
+Username = User
+	end	  
+})
+
+Tab:AddTextbox({
+	Name = "Message",
+	Default = "",
+	TextDisappear = true,
+	Callback = function(Text)
+Message = Text
+	end	  
+})
+
+Tab:AddSlider({
+	Name = "Spam Speed",
+	Min = 20,
+	Max = 30,
+	Default = 25,
+	Color = Color3.fromRGB(10, 24, 36),
+	Increment = 1,
+	ValueName = "Seconds",
+	Callback = function(Value)
+SpamTime = (Value)
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Message Spam",
+	Default = false,
+	Callback = function(Value)
+  task.spawn(function()
+  getgenv().toggleLoop = Value
+  while getgenv().toggleLoop and task.wait() do
+game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(["..Rank.."] ["..Username.."]: "..Message.."", "All")
+wait(SpamTime)
+end
+end)
+	end    
+})
+
+Tab:AddButton({
+	Name = "Serverhop (big servers)",
+	Callback = function()
+local function serverhop()
+            print("Server hop is triggered")
+            local response = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Desc&limit=50"))
+            if response and response["data"] then
+                for i, v in pairs(response["data"]) do
+                    if v["playing"] ~= v["maxPlayers"] then
+                        game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v["id"])
+                        break
+                    end
+                end
+            else
+                print("Error: failed to decode JSON response or missing data field.")
+            end
+        end
+        while true do
+wait(0.1)
+        serverhop()
+       end
+  	end    
+})
+
+
